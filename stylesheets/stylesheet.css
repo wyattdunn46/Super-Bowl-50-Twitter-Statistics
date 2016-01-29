@@ -424,10 +424,12 @@ Small Device Styles
   
   #names {
     text-align: left;
+    float: left;
   }
   
   #date {
     text-align: right;
+    float: right;
   }
 
 }
