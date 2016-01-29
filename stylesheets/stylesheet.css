@@ -430,6 +430,7 @@ Small Device Styles
   #date {
     text-align: right;
     float: right;
+    background-color: yellow;
   }
 
 }
