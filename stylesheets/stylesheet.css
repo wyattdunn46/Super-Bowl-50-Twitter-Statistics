@@ -422,15 +422,8 @@ Small Device Styles
     font-size: 11px;
   }
   
-  #names {
-    text-align: left;
-    float: left;
-  }
-  
   #date {
-    text-align: right;
-    float: right;
-    background-color: yellow;
+    margin-left: 75%;
   }
 
 }
