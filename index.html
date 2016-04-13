@@ -38,35 +38,112 @@
         <h2>Project Overview</h2>
 
           <p>We are studying Twitter. Twitter is a social network that allows users to send “tweets”. Tweets are visible to the public and are limited to 140 characters. We are specifically interested in the tweets, especially the content, location of the tweets and the time when they were posted. Twitter has 289 million active users[1]. These users send about 500 million tweets a day[2]. This massive amount of tweets is like a “stream of consciousness” for the general public. So if one was to take the general opinion or reaction of twitter as a whole in response to a certain event, they could generalize that as representative of the opinion of the public at large.</p>
+
           <p>&lt;Example embedded tweet&gt;</p>
-          <br>“This is an example of a tweet”
+          “This is an example of a tweet”<br>
 
           <p>This easily accessible large dataset that effectively represents so well the general opinion lead us to wonder if we could draw some conclusions about how people react to popular events. In the past this would have been almost impossible to do, but the information available through Twitter makes it possible to get an understanding of how people feel about current events. The datasets are actually so large, that we can even gain an understanding of the mechanics of how people talk about events, how opinions spread, and how long it takes for people to form reactions.</p>
 
           <p>With 500 million tweets in a day there is just far too much data for the scope of this project. It isn’t reasonable for us to try and analyze data about everything that every user is tweeting about. So, we decided to limit our data to only tweets that have some relation to Super Bowl 50. Super Bowl 50 was a massive cultural event, with over 100 million viewers. So, even though this limited the amount of tweets we collected there was still enough people talking about it to allow us to collect enough data to perform an analysis on. Super Bowl 50 can then be thought of as a model that we can then relate to other popular current events such as political debates, large concerts, sports, and eSports.</p>
 
           <p>Twitter publishes a Streaming API that allows anyone with a twitter account to collect tweets in real time. We used a python script called Tweepy to access the twitter API. We collected tweets based on lists of keywords. The categories we used to separate the tweets are commercials, referees, big plays, and the halftime show.</p>
-          <p>&lt;code box with example tweet in JSON format&gt;</p>
-          <br>“This is what a tweet looks like as it comes from the Streaming API”
-          <br>For more information on our data collection please see this page. &lt;link&gt;
+
+          <h3>Example of a tweet in JSON format</h3>
+          <figure id="json_figure">
+          <pre>
+          <code>
+{  
+  "created_at":"Mon Feb 08 00:34:42 +0000 2016",
+  "id":696492311996313600,
+  "id_str":"696492311996313600",
+  "text":"RT @mgafni: Lots of people lined up outside Levi's Stadium for halftime show when they can go on field; no Left Shark #SB50 https:\/\/t.co\/te\u2026",
+  "source":"\u003ca href=\"https:\/\/about.twitter.com\/products\/tweetdeck\" rel=\"nofollow\"\u003eTweetDeck\u003c\/a\u003e",
+  "truncated":false,
+  "in_reply_to_status_id":null,
+  "in_reply_to_status_id_str":null,
+  "in_reply_to_user_id":null,
+  "in_reply_to_user_id_str":null,
+  "in_reply_to_screen_name":null,
+  "user":{  
+      "id":68433924,
+      "id_str":"68433924",
+      "name":"Robert Salonga",
+      "screen_name":"robertsalonga",
+      "location":"San Jose, Oakland",
+      "url":"http:\/\/mercurynews.com",
+      "description":"Crime & Public Safety, San Jose Mercury News (@mercnews). Bruin\/Terp alum. Middling triathlete. Just the tips: rsalonga@mercurynews.com",
+      "protected":false,
+      "verified":true,
+      "followers_count":2924,
+      "friends_count":460,
+      "listed_count":180,
+      "favourites_count":127,
+      "statuses_count":18075,
+      "created_at":"Mon Aug 24 15:38:19 +0000 2009",
+      "utc_offset":-28800,
+      "time_zone":"Pacific Time (US & Canada)",
+      "geo_enabled":true,
+      "lang":"en",
+      "contributors_enabled":false,
+      "is_translator":false,
+      "profile_background_color":"C0DEED",
+      "profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_tile":false,
+      "profile_link_color":"0084B4",
+      "profile_sidebar_border_color":"C0DEED",
+      "profile_sidebar_fill_color":"DDEEF6",
+      "profile_text_color":"333333",
+      "profile_use_background_image":true,
+      "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/509219502232330240\/MXxXjb2S_normal.jpeg",
+      "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/509219502232330240\/MXxXjb2S_normal.jpeg",
+      "profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/68433924\/1431536609",
+      "default_profile":true,
+      "default_profile_image":false,
+      "following":null,
+      "follow_request_sent":null,
+      "notifications":null
+  },
+ "geo":null,
+ "coordinates":null,
+ "place":null,
+ "contributors":null,
+ "favorited":false,
+ "retweeted":false,
+ "possibly_sensitive":false,
+ "filter_level":"low",
+ "lang":"en",
+ "timestamp_ms":"1454891682038"
+}
+        </code>
+      </pre>
+
+        <figcaption>This is what a tweet looks like as it comes from the Streaming API</figcaption>
+        </figure>
+
+          <br>For more information on our data collection please see <a href="#data_collection">this page.</a>
 
           <p>As you can see every tweet has a wealth of data associated with it. We are mainly interested in the “text”, “created_at”, and “location” fields. Due to the nature of the data collection the tweets are spread across a large number of separate JSON files. To solve this we have a python script that reads every JSON file in the directory and combines them into a single file that contains the entire dataset. Then we have another script that writes the tweets to a .csv file containing only the fields we are interested in. This format makes the data easier to work with in R.</p>
-          <br>Please click here to see more detail on how we wrangled this data. &lt;link&gt;
+
+          Please <a href="#data_wrangling">click here</a> to see more detail on how we wrangled this data.
 
           <p>So, now we have data. But what are we going to do with it? We have a few hypotheses that we can explore using this data. Firstly, it is intuitive to think that twitter trends will show a reaction to real life events. In this case, a trend is the frequency of tweets about a topic over time. This means that we expect to see a spike in how many and how often people are tweeting about topics related to an event immediately after it happens. We also have a working theory about how these trends will be shaped. We anticipate a rapid and sharp spike immediately following the event, then a slow decay in popularity of related topics in the time after the event. These trends should follow a fairly consistent pattern. We expect the trends that correspond to most events to match the shape described above.</p>
-          <figure id="figure1">
+          <figure id="figure_img1">
             <h3>Example Data from Halftime Show Data Frame</h3>
             <img src="images/time_histogram.png">
             <figcaption>“this is an example of what a twitter trend graph looks like”</figcaption>
           </figure>
           <br><br>
+
           &lt;insert placeholder figure&gt;
           <br>“this graph shows a trend with the time marked on it of when the corresponding event occurred"
           <br><br>
+
           &lt;graphs of frequency of tweets by keywords&gt;
           <br><br>
 
           <p>There is also the content of people’s reactions and opinions, ie what are people actually saying, not just how they are saying it. Any Hypothesis we could come up with about this would be dependent on the exact event and the context in which the event happened. Therefore, our general hypothesis is that the general reaction to an event is context sensitive. This makes logical sense, seeing as how nothing really happens in a vacuum. Even the frequency of an event, or if the event has happened before at all could affect the nature of twitter users’ reactions and opinions. Take for instance a turnover in a football game. If the score of the game is ten to ten and a turnover occurs, it is extremely significant to the game and its viewers. We would expect to see a lot of tweets about it, and the content of those tweets to be very emotional and excited. However, if the game is thirty-five to nothing, we would expect the content of the tweets to be more subdued.</p>
+
           <br>&lt;similar figures as above, but only of certain subsets of tweets&gt;
           <br>“This figure would show how twitter reacted to multiple turnovers over the course of the game”<br>
 
@@ -74,26 +151,193 @@
 
           <p>All of the code we used for this analysis is available on our github. Please click here for an explanation of how we made these figures. &lt;link&gt;</p>
 
-        <h2>Data Collection</h2>
-        <p>This section explains some of our data collection techniques. As mentioned in the main article we took advantage of a git project called Tweepy that allows us to easily interact with the Streaming API. To utilize Tweepy we used python scripts from badhessian.org. These scripts required only a little bit of modification for our purposes. There is slistener.py which handles the tweepy interaction and saving the tweets to a file.</p>
-        <br>&lt;slistener.py code box&gt;<br>
+        <h2 id="data_collection">Data Collection</h2>
+        <p>This section explains some of our data collection techniques. As mentioned in the main article we took advantage of a git project called Tweepy that allows us to easily interact with the Streaming API. To utilize Tweepy we used python scripts from badhessian.org. These scripts required only a little bit of modification for our purposes. There is slistener.py which creates a listener that will stream the tweepy interaction while the streaming.py file saves the tweets to a file.</p>
+        <h3>Code to create a slistener object that will stream</h3>
+        <pre>
+          <code>
+from tweepy import StreamListener
+import json, time, sys
+from time import sleep
+class SListener(StreamListener):
 
+    def __init__(self, api = None, fprefix = 'streamer'):
+        self.api = api or API()
+        self.counter = 0
+        self.fprefix = fprefix
+        self.output  = open('../Data/' + fprefix + '.' 
+                            + time.strftime('%Y%m%d-%H%M%S') + '.json', 'w')
+        self.delout  = open('delete.txt', 'a')
+
+    def on_data(self, data):
+        
+        if  'in_reply_to_status' in data:
+            self.on_status(data)
+        elif 'delete' in data:
+            delete = json.loads(data)['delete']['status']
+            if self.on_delete(delete['id'], delete['user_id']) is False:
+                return False
+        elif 'limit' in data:
+            if self.on_limit(json.loads(data)['limit']['track']) is False:
+                return False
+        elif 'warning' in data:
+            warning = json.loads(data)['warnings']
+            print warning['message']
+            return false
+
+    def on_status(self, status):
+        self.output.write(status + "\n")
+
+        self.counter += 1
+        print self.counter
+        sleep(0.2)
+        if self.counter >= 20000:
+            self.output.close()
+            self.output = open('../streaming_data/' + self.fprefix + '.' 
+                               + time.strftime('%Y%m%d-%H%M%S') + '.json', 'w')
+            self.counter = 0
+
+        return
+
+    def on_delete(self, status_id, user_id):
+        self.delout.write( str(status_id) + "\n")
+        return
+
+    def on_limit(self, track):
+        sys.stderr.write(track + "\n")
+        return
+
+    def on_error(self, status_code):
+        sys.stderr.write('Error: ' + str(status_code) + "\n")
+        return False
+
+    def on_timeout(self):
+        sys.stderr.write("Timeout, sleeping for 60 seconds...\n")
+        time.sleep(60)
+        return 
+      </code>
+    </pre>
+
+    <br><h3>Code that will save data coming from slistener to a file</h3>
+    <pre>
+      <code>
+from slistener import SListener
+import time, tweepy, sys
+from time import sleep
+
+## authentication
+##username = '' ## put a valid Twitter username here
+##password = '' ## put a valid Twitter password here
+auth     = tweepy.OAuthHandler('OwaEbdPfLJVnTuadkpFoQKs4m', 'wSWZ4hCn64nj3GAGKAcSVxvPDd26rYVGbOv81JBfP4VyTJYRCI')
+auth.set_access_token('317599687-5KhnMVM92ZIgeGiyimi6yMDEautnrRBN7gvZwJLq', 'HfPFz9pLAsF3VNEOKZeXgz4Up7YyubJ55U3XvjtPQ1vvK')
+api      = tweepy.API(auth)
+
+def main():
+    loop = True
+    while (loop):
+        track = ['halftime show','halftime']
+ 
+        listen = SListener(api, 'halftime_show')
+        stream = tweepy.Stream(auth, listen)
+
+        print "Streaming started..."
+
+        try: 
+            stream.filter(track = track)
+            loop = False
+        except:
+            print "error!"
+            loop = True
+            stream.disconnect()
+            sleep(5)
+            continue
+
+if __name__ == '__main__':
+    main()
+        </code>
+      </pre>
+      <br>
         <p>We ran our scripts for the duration of the Super Bowl, which was about four hours. During this time we collected over a gigabyte of tweets in the standard Twitter API JSON format. The Streaming API is rate limited, so we did not obtain literally every tweet that contained one of our keywords, especially because at times our scripts were manually limited by a short pause. This was because the stream of tweets at times exceeded what a=our computers could process and simply crashed the python scripts.</p>
         <ul>Using Tweepy For Streaming
           <li><a href=http://badhessian.org/2012/10/collecting-real-time-twitter-data-with-the-streaming-api/>Guide to streaming with Tweepy</a></li>
           <li><a href=https://github.com/tweepy/tweepy>Tweepy Git page</a></li>
         </ul>
 
-      <h2>Data Wrangling</h2>
+      <h2 id="data_wrangling">Data Wrangling</h2>
         <p>This section describes the techniques we used to transform the data into a format that we could perform analysis on. After we collected the tweets we had hundreds of separate .json files. So, we wrote a python script to combine all the files into one for each category.</p>
-        <br>&lt;code box with merge script&gt;<br>
+
+        <h3>Code that merges multiple JSON files into one JSON file</h3>
+        <pre>
+          <code>
+import json
+import csv
+import glob
+import os
+import ast
+
+#create and open output file
+if not os.path.exists("json_merged/"):
+        os.makedirs("json_merged/")
+outfile_name = "json_merged/halftime_show_merged.json"
+print "Merging jsons"
+
+with open(outfile_name, "a") as outfile:
+    
+    path = "F:\Superbowl Stats\Data\*.json"
+    for json_file in glob.glob(path):
+        
+        #open json file and parse data while writing into output file
+        with open(json_file, 'r') as open_json_file:
+            outfile.write(open_json_file.read())
+          </code>
+        </pre>
 
         <p>Now the data is a little easier to handle, from a few hundred files down to four. But, we still need to pull out the information we need and put it into csv format. To do this we wrote another short python script that loads in our large json file and parses each tweet for the data we are looking for.</p>
-        <br>&lt;code box with JSONtoCSV script&gt;<br>
 
-        <p>After running this script the tweets are now in a clean csv file that can be imported to R studio for analysis.</p>
+        <h3>Code that writes each line (tweet) from JSON file to a CSV file in CSV format</h3>
+      <pre>
+        <code>
+import json
+import csv
+import glob
+import os
+import ast
+   
+with open ("F:\Superbowl Stats\cvs_merged\halftime_show_mergedcvs.cvs", "a") as out_file:
+    
+    #create csv writer
+    csv = csv.writer(out_file)
+    #write header to out file
+    print >> out_file, 'tweet_id, tweet_time, tweet_author, tweet_author_id, tweet_language, tweet_geo, tweet_location, tweet_text'
+    #open json file and parse data while writing into output file
+    with open("F:\Superbowl Stats\json_merged\halftime_show_merged.json", 'r') as open_json_file:
+        
+        #Get each tweet
+        for line in open_json_file:
+            try:
+                tweet = json.loads(line)
+                #print "WE FUCKING DID IT BOYS!!!!!!!!!!!!!!!!!!!!!"
+                row = (
+                    tweet['id'],                    # tweet_id
+                    tweet['timestamp_ms'],          # tweet_time
+                    tweet['user']['screen_name'],   # tweet_author
+                    tweet['user']['id_str'],        # tweet_authod_id
+                    tweet['lang'],                  # tweet_language
+                    tweet['user']['geo_enabled'],   # tweet_geo
+                    tweet['user']['location'],      # tweet location
+                    tweet['text']                   # tweet_text
+                )
+                values = [(value.encode('utf8') if hasattr(value, 'encode') else value) for value in row]
+                csv.writerow(values)
+            except:
+                #print "Couldn't parse line: %s" % line
+                pass 
+        </code>
+      </pre>
+      
+        <br><p>After running this script the tweets are now in a clean csv file that can be imported to R studio for analysis.</p>
 
-      <h2>Data Analysis</h2>
+      <h2 id="data_analysis">Data Analysis</h2>
         <p>We used R Studio to create the various graphs seen in this project. Once the data was transformed into the csv files we imported it into R Studio. From there we used the ggplot2 package and the built in plotting functions of R to create the figures.</p>
 
       </section>

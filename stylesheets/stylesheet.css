@@ -367,17 +367,28 @@ Full-Width Styles
 #footer_wrap {
   background: #212121;
 }
-
-#figure1 {
+/*******************************************************************************
+Customized css
+*******************************************************************************/
+#figure_img1 {
   margin-left: 15%;
 }
-#figure1 img{
+#figure_img1 img{
     max-width: 75%;
   }
 
-#figure1 figcaption {
+#figure_img1 figcaption {
     margin-right: 25%;
   }
+
+code {
+  font-family: "Consolas", "Courier New";
+  font-size: .75em;
+}
+
+#json_figure figcaption{
+  text-align: center;
+}
 /*******************************************************************************
 Small Device Styles
 *******************************************************************************/
