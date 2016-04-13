@@ -368,8 +368,16 @@ Full-Width Styles
   background: #212121;
 }
 
+#figure1 {
+  margin-left: 15%;
+}
+#figure1 img{
+    max-width: 75%;
+  }
 
-
+#figure1 figcaption {
+    margin-right: 25%;
+  }
 /*******************************************************************************
 Small Device Styles
 *******************************************************************************/
@@ -425,5 +433,4 @@ Small Device Styles
   #date {
     margin-left: 75%;
   }
-
 }
