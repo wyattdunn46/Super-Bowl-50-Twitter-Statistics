@@ -382,7 +382,7 @@ Customized css
   }
 
 code {
-  font-family: "Consolas", "Courier New";
+  font-family: "Consolas", "Monaco","Lucida Console","Liberation Mono", "Courier New";
   font-size: .75em;
 }
 
