@@ -33,7 +33,7 @@
       <section id="main_content" class="inner">
         <h3 id="names">Paul Middendorf<br>
             Wyatt Dunn</h3>
-        <h3 id="date">1/28/16</h3>
+        <h3 id="date">04/13/16</h3>
 
         <h2>Project Overview</h2>
 
@@ -121,7 +121,7 @@
         <figcaption>This is what a tweet looks like as it comes from the Streaming API</figcaption>
         </figure>
 
-          <br>For more information on our data collection please see <a href="#data_collection">this page.</a>
+          <br>For more information on our data collection please see <a href="#data_collection">this section.</a>
 
           <p>As you can see every tweet has a wealth of data associated with it. We are mainly interested in the “text”, “created_at”, and “location” fields. Due to the nature of the data collection the tweets are spread across a large number of separate JSON files. To solve this we have a python script that reads every JSON file in the directory and combines them into a single file that contains the entire dataset. Then we have another script that writes the tweets to a .csv file containing only the fields we are interested in. This format makes the data easier to work with in R.</p>
 
@@ -334,7 +334,7 @@ with open ("F:\Superbowl Stats\cvs_merged\halftime_show_mergedcvs.cvs", "a") as 
                 pass 
         </code>
       </pre>
-      
+
         <br><p>After running this script the tweets are now in a clean csv file that can be imported to R studio for analysis.</p>
 
       <h2 id="data_analysis">Data Analysis</h2>
