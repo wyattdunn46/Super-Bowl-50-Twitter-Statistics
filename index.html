@@ -38,10 +38,15 @@
         <h2>Project Overview</h2>
 
           <p>We are studying Twitter. Twitter is a social network that allows users to send “tweets”. Tweets are visible to the public and are limited to 140 characters. We are specifically interested in the tweets, especially the content, location of the tweets and the time when they were posted. Twitter has 289 million active users[1]. These users send about 500 million tweets a day[2]. This massive amount of tweets is like a “stream of consciousness” for the general public. So if one was to take the general opinion or reaction of twitter as a whole in response to a certain event, they could generalize that as representative of the opinion of the public at large.</p>
-
-          <p>&lt;Example embedded tweet&gt;</p>
-          “This is an example of a tweet”<br>
-
+          
+          <br>
+          <figure>
+          <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Which <a href="https://twitter.com/hashtag/commercial?src=hash">#commercial</a> will cause a controversy tonight? Guess correctly and you&#39;ll win a prize <a href="https://twitter.com/hashtag/SuperBowl?src=hash">#SuperBowl</a> <a href="https://twitter.com/hashtag/SB50?src=hash">#SB50</a></p>&mdash; Tuna Palace (@TheTunaPalace) <a href="https://twitter.com/TheTunaPalace/status/696475321399382018">February 7, 2016</a></blockquote>
+          <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+          <figcaption>This is an example tweet</figcaption>
+          </figure>
+          <br>
+          
           <p>This easily accessible large dataset that effectively represents so well the general opinion lead us to wonder if we could draw some conclusions about how people react to popular events. In the past this would have been almost impossible to do, but the information available through Twitter makes it possible to get an understanding of how people feel about current events. The datasets are actually so large, that we can even gain an understanding of the mechanics of how people talk about events, how opinions spread, and how long it takes for people to form reactions.</p>
 
           <p>With 500 million tweets in a day there is just far too much data for the scope of this project. It isn’t reasonable for us to try and analyze data about everything that every user is tweeting about. So, we decided to limit our data to only tweets that have some relation to Super Bowl 50. Super Bowl 50 was a massive cultural event, with over 100 million viewers. So, even though this limited the amount of tweets we collected there was still enough people talking about it to allow us to collect enough data to perform an analysis on. Super Bowl 50 can then be thought of as a model that we can then relate to other popular current events such as political debates, large concerts, sports, and eSports.</p>
@@ -283,7 +288,7 @@ print "Merging jsons"
 
 with open(outfile_name, "a") as outfile:
     
-    path = "F:\Superbowl Stats\Data\*.json"
+    path = "C:\python27\streaming data\*.json"
     for json_file in glob.glob(path):
         
         #open json file and parse data while writing into output file
@@ -299,38 +304,37 @@ with open(outfile_name, "a") as outfile:
         <code>
 import json
 import csv
-import glob
 import os
 import ast
-   
-with open ("F:\Superbowl Stats\cvs_merged\halftime_show_mergedcvs.cvs", "a") as out_file:
+    
+with open ("C:\python27\scripts\json_merged\halftime_show.cvs", "a") as out_file:
     
     #create csv writer
     csv = csv.writer(out_file)
     #write header to out file
-    print >> out_file, 'tweet_id, tweet_time, tweet_author, tweet_author_id, tweet_language, tweet_geo, tweet_location, tweet_text'
-    #open json file and parse data while writing into output file
-    with open("F:\Superbowl Stats\json_merged\halftime_show_merged.json", 'r') as open_json_file:
+    print >> out_file, 'tweet_id, tweet_time, tweet_author, tweet_author_id, tweet_language, tweet_geo, tweet_text'
+    #open json file and parse data
+    with open("C:\python27\scripts\json_merged\halftime_show_merged.json", 'r') as open_json_file:
         
         #Get each tweet
         for line in open_json_file:
             try:
                 tweet = json.loads(line)
-                #print "WE FUCKING DID IT BOYS!!!!!!!!!!!!!!!!!!!!!"
+                # row represents the attributes we are pulling from each tweet
                 row = (
                     tweet['id'],                    # tweet_id
-                    tweet['timestamp_ms'],          # tweet_time
+                    tweet['created_at'],            # tweet_time
                     tweet['user']['screen_name'],   # tweet_author
+                    tweet['user']['location'],      # tweeter location
                     tweet['user']['id_str'],        # tweet_authod_id
                     tweet['lang'],                  # tweet_language
-                    tweet['user']['geo_enabled'],   # tweet_geo
-                    tweet['user']['location'],      # tweet location
-                    tweet['text']                   # tweet_text
+                    tweet['geo'],                   # tweet_geo
+                    tweet['text'],                  # tweet_text
+                    tweet['timestamp_ms']           # tweet time in ms
                 )
                 values = [(value.encode('utf8') if hasattr(value, 'encode') else value) for value in row]
                 csv.writerow(values)
             except:
-                #print "Couldn't parse line: %s" % line
                 pass 
         </code>
       </pre>
