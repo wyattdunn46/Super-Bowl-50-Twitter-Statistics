@@ -9,13 +9,9 @@
     <!-- begin CSS -->
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="jquery/sss/sss.css" type="text/css" media="all">    
     <!-- end CSS -->
-	
-    <!-- begin JS -->
-    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script> 
-    <script src="js/modernizr-2.0.6.min.js" type="text/javascript"></script> 
-    <!-- end JS -->
+    
     <title>Super-bowl-50-twitter-statistics</title>
   </head>
 
@@ -67,7 +63,7 @@
           <figure>
           <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Which <a href="https://twitter.com/hashtag/commercial?src=hash">#commercial</a> will cause a controversy tonight? Guess correctly and you&#39;ll win a prize <a href="https://twitter.com/hashtag/SuperBowl?src=hash">#SuperBowl</a> <a href="https://twitter.com/hashtag/SB50?src=hash">#SB50</a></p>&mdash; Tuna Palace (@TheTunaPalace) <a href="https://twitter.com/TheTunaPalace/status/696475321399382018">February 7, 2016</a></blockquote>
           <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-          <figcaption>This is an example tweet</figcaption>
+          <p>This is an example tweet</p>
           </figure>
           <br>
           
@@ -147,7 +143,7 @@
         </code>
       </pre>
 
-        <figcaption>This is what a tweet looks like as it comes from the Streaming API</figcaption>
+        <p>This is what a tweet looks like as it comes from the Streaming API</p>
         </figure>
 
           <br>For more information on our data collection please see our <a href="data collection.html">data collection page.</a>
@@ -159,30 +155,24 @@
           
           <h2>Data Analysis</h2>
           <p>So, now we have data. But what are we going to do with it? We have a few hypotheses that we can explore using this data. Firstly, it is intuitive to think that twitter trends will show a reaction to real life events. In this case, a trend is the frequency of tweets about a topic over time. This means that we expect to see a spike in how many and how often people are tweeting about topics related to an event immediately after it happens. We also have a working theory about how these trends will be shaped. We anticipate a rapid and sharp spike immediately following the event, then a slow decay in popularity of related topics in the time after the event. These trends should follow a fairly consistent pattern. We expect the trends that correspond to most events to match the shape described above.</p>
-          <figure>            
-            <img src="images/halftime frequency.png">
-            <figcaption>This is the overall freqency of tweets relating to the halftime show</figcaption>
-          </figure>
-          <br><br>
           
-          <figure>
-            <img src="images/coldplay frequency.png">
-            <figcaption>This is the overall freqency of tweets relating to Coldplay</figcaption>
-          </figure>
-          <br><br>
-          
-          <figure>
-            <img src="images/beyonce frequency.png">
-            <figcaption>This is the overall freqency of tweets relating to Beyonce</figcaption>
-          </figure>
-          <br><br>
-          
-          <figure>
-            <img src="images/bruno mars frequency.png">
-            <figcaption>This is the overall freqency of tweets relating to Bruno Mars</figcaption>
-          </figure>
+          <h3>Halftime Show Data</h3>
+          <div class="slider">
+            <img src="images/halftime frequency.png" />
+            <img src="images/coldplay frequency.png" />
+            <img src="images/beyonce frequency.png" />
+            <img src="images/bruno mars frequency.png" />
+           </div>
+ 
           <br><br>
 
+          <h3>Commerical Data</h3>
+          <div class="slider">
+            <img src="images/CommercialsPlot.png" />
+            <img src="images/AudiPlot.png" />
+            <img src="images/BudweiserPlot.png" />
+            <img src="images/DoritosPlot.png" />
+          </div>
           <p>There is also the content of people’s reactions and opinions, ie what are people actually saying, not just how they are saying it. Any Hypothesis we could come up with about this would be dependent on the exact event and the context in which the event happened. Therefore, our general hypothesis is that the general reaction to an event is context sensitive. This makes logical sense, seeing as how nothing really happens in a vacuum. Even the frequency of an event, or if the event has happened before at all could affect the nature of twitter users’ reactions and opinions. Take for instance a turnover in a football game. If the score of the game is ten to ten and a turnover occurs, it is extremely significant to the game and its viewers. We would expect to see a lot of tweets about it, and the content of those tweets to be very emotional and excited. However, if the game is thirty-five to nothing, we would expect the content of the tweets to be more subdued.</p>
 
           <p>This is a place holder paragraph. We will talk about the qualitative side of our analysis here. Perhaps we can see that X% of all tweets about Y topic were negative over the course of the game. Or perhaps we can insert a figure here that shows the frequency of words with a positive/negative/etc. connotation and mark interesting events on this figure.</p>
@@ -199,8 +189,15 @@
         <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    
-
+    <script type="text/javascript" src="jquery/jquery-1.12.3.js"></script>
+    <script src="jquery/sss/sss.min.js"></script>
+    <script>
+      jQuery(function($) {
+        $('.slider').sss({
+          slideShow: false
+        });
+      });
+    </script>
   </body>
+  
 </html>

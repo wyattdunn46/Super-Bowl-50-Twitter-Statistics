@@ -55,8 +55,18 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
       <h2>Creating Figures in R</h2>
-        <p>We used R Studio to create the various graphs seen in this project. Once the data was transformed into the csv files we imported it into R Studio. From there we used the ggplot2 package and the built in plotting functions of R to create the figures.</p>
+        <p>We used R Studio to create the various graphs seen in this project. Once the data was transformed into the csv files we imported it into R Studio. Once in R studio we converted the timestamp_ms field to Eastern Standard Time. Then we created subsets of the data frames according to certain keywords. Due to R’s weirdness we used regex to select the tweets we wanted in out subsets. The code we used to do this can be seen below.</p>
+        
+        <pre>
+        <code>
+commercials$tweet_ms <- as.POSIXct(commercials$tweet_ms/1000, origin = "1970-1-1")
 
+doritos <- commercials[grep("[Dd]orito[*s]", commercials$tweet_text, perl=TRUE),]
+
+hist(doritos$tweet_ms, breaks = 100, xlab = "Time of Tweet", main = "Frequency of Tweets Referencing Doritos", freq = TRUE)
+        <code>
+        </pre>
+        
       </section>
     </div>
 
