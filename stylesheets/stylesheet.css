@@ -386,7 +386,8 @@ code {
   font-size: .75em;
 }
 
-#json_figure figcaption{
+figcaption {
+  font-style: italic;
   text-align: center;
 }
 /*******************************************************************************
