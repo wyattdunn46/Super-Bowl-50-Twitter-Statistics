@@ -385,7 +385,8 @@ figcaption {
 }
 
 figure {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 /*******************************************************************************
 Small Device Styles
