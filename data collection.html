@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Super-bowl-50-twitter-statistics : Some statistics taken using Twitter StreamingAPI to see Twitter user reactions to Super Bowl events">
+    
+    <!-- begin CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
+    
+    <!-- end CSS -->
+	
+    <!-- begin JS -->
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script> 
+    <script src="js/modernizr-2.0.6.min.js" type="text/javascript"></script> 
+    <!-- end JS -->
+    <title>Super-bowl-50-twitter-statistics</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics">View on GitHub</a>
+
+          <h1 id="project_title">Super-bowl-50-twitter-statistics</h1>
+          <h2 id="project_tagline">Some statistics taken using Twitter StreamingAPI to see Twitter user reactions to Super Bowl events</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics/tarball/master">Download this project as a tar.gz file</a>
+            </section>              
+        </header>
+    </div>
+    <!-- begin container -->
+    <div id="container" style="width: 600px; margin: 280px auto 0;">
+
+    <!-- begin navigation -->
+    <nav id="navigation">
+		<ul id="navbar">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="data collection.html">Data Collection</a></li>
+			<li><a href="data wrangling.html">Data Wrangling</a></li>
+			<li><a href="creating figures.html">Creating Figures in R</a></li>	
+		</ul>
+    </nav>
+    <!-- end navigation -->	
+</div>
+<!-- end container -->
+
+<!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+      <h2>Data Collection</h2>
+      <p>This section explains some of our data collection techniques. As mentioned in the main article we took advantage of a git project called Tweepy that allows us to easily interact with the Streaming API. To utilize Tweepy we used python scripts from badhessian.org. These scripts required only a little bit of modification for our purposes. There is slistener.py which creates a listener that will stream the tweepy interaction while the streaming.py file saves the tweets to a file.</p>
+        <h3>Code to create a slistener object that will stream</h3>
+        <pre>
+          <code>
+from tweepy import StreamListener
+import json, time, sys
+from time import sleep
+class SListener(StreamListener):
+
+    def __init__(self, api = None, fprefix = 'streamer'):
+        self.api = api or API()
+        self.counter = 0
+        self.fprefix = fprefix
+        self.output  = open('../Data/' + fprefix + '.' 
+                            + time.strftime('%Y%m%d-%H%M%S') + '.json', 'w')
+        self.delout  = open('delete.txt', 'a')
+
+    def on_data(self, data):
+        
+        if  'in_reply_to_status' in data:
+            self.on_status(data)
+        elif 'delete' in data:
+            delete = json.loads(data)['delete']['status']
+            if self.on_delete(delete['id'], delete['user_id']) is False:
+                return False
+        elif 'limit' in data:
+            if self.on_limit(json.loads(data)['limit']['track']) is False:
+                return False
+        elif 'warning' in data:
+            warning = json.loads(data)['warnings']
+            print warning['message']
+            return false
+
+    def on_status(self, status):
+        self.output.write(status + "\n")
+
+        self.counter += 1
+        print self.counter
+        sleep(0.2)
+        if self.counter >= 20000:
+            self.output.close()
+            self.output = open('../streaming_data/' + self.fprefix + '.' 
+                               + time.strftime('%Y%m%d-%H%M%S') + '.json', 'w')
+            self.counter = 0
+
+        return
+
+    def on_delete(self, status_id, user_id):
+        self.delout.write( str(status_id) + "\n")
+        return
+
+    def on_limit(self, track):
+        sys.stderr.write(track + "\n")
+        return
+
+    def on_error(self, status_code):
+        sys.stderr.write('Error: ' + str(status_code) + "\n")
+        return False
+
+    def on_timeout(self):
+        sys.stderr.write("Timeout, sleeping for 60 seconds...\n")
+        time.sleep(60)
+        return 
+      </code>
+    </pre>
+
+    <br><h3>Code that will save data coming from slistener to a file</h3>
+    <pre>
+      <code>
+from slistener import SListener
+import time, tweepy, sys
+from time import sleep
+
+## authentication
+##username = '' ## put a valid Twitter username here
+##password = '' ## put a valid Twitter password here
+auth     = tweepy.OAuthHandler('OwaEbdPfLJVnTuadkpFoQKs4m', 'wSWZ4hCn64nj3GAGKAcSVxvPDd26rYVGbOv81JBfP4VyTJYRCI')
+auth.set_access_token('317599687-5KhnMVM92ZIgeGiyimi6yMDEautnrRBN7gvZwJLq', 'HfPFz9pLAsF3VNEOKZeXgz4Up7YyubJ55U3XvjtPQ1vvK')
+api      = tweepy.API(auth)
+
+def main():
+    loop = True
+    while (loop):
+        track = ['halftime show','halftime']
+ 
+        listen = SListener(api, 'halftime_show')
+        stream = tweepy.Stream(auth, listen)
+
+        print "Streaming started..."
+
+        try: 
+            stream.filter(track = track)
+            loop = False
+        except:
+            print "error!"
+            loop = True
+            stream.disconnect()
+            sleep(5)
+            continue
+
+if __name__ == '__main__':
+    main()
+        </code>
+      </pre>
+      <br>
+        <p>We ran our scripts for the duration of the Super Bowl, which was about four hours. During this time we collected over a gigabyte of tweets in the standard Twitter API JSON format. The Streaming API is rate limited, so we did not obtain literally every tweet that contained one of our keywords, especially because at times our scripts were manually limited by a short pause. This was because the stream of tweets at times exceeded what a=our computers could process and simply crashed the python scripts.</p>
+        <ul><h4>Using Tweepy For Streaming</h4>
+          <li><a href=http://badhessian.org/2012/10/collecting-real-time-twitter-data-with-the-streaming-api/>Guide to streaming with Tweepy</a></li>
+          <li><a href=https://github.com/tweepy/tweepy>Tweepy Git page</a></li>
+        </ul>
+      
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Super-bowl-50-twitter-statistics maintained by <a href="https://github.com/wyattdunn46">wyattdunn46</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+  </body>
+</html>

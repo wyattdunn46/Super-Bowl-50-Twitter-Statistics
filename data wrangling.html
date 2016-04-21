@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Super-bowl-50-twitter-statistics : Some statistics taken using Twitter StreamingAPI to see Twitter user reactions to Super Bowl events">
+    
+    <!-- begin CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
+    
+    <!-- end CSS -->
+	
+    <!-- begin JS -->
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script> 
+    <script src="js/modernizr-2.0.6.min.js" type="text/javascript"></script> 
+    <!-- end JS -->
+    <title>Super-bowl-50-twitter-statistics</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics">View on GitHub</a>
+
+          <h1 id="project_title">Super-bowl-50-twitter-statistics</h1>
+          <h2 id="project_tagline">Some statistics taken using Twitter StreamingAPI to see Twitter user reactions to Super Bowl events</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/wyattdunn46/Super-Bowl-50-Twitter-Statistics/tarball/master">Download this project as a tar.gz file</a>
+            </section>              
+        </header>
+    </div>
+    <!-- begin container -->
+    <div id="container">
+
+    <!-- begin navigation -->
+    <nav id="navigation">
+		<ul id="navbar">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="data collection.html">Data Collection</a></li>
+			<li><a href="data wrangling.html">Data Wrangling</a></li>
+			<li><a href="creating figures.html">Creating Figures in R</a></li>	
+		</ul>
+    </nav>
+    <!-- end navigation -->	
+</div>
+<!-- end container -->
+
+<!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+      <h2>Data Wrangling</h2>
+      
+        <p>This section describes the techniques we used to transform the data into a format that we could perform analysis on. After we collected the tweets we had hundreds of separate .json files. So, we wrote a python script to combine all the files into one for each category.</p>
+
+        <h3>Code that merges multiple JSON files into one JSON file</h3>
+        <pre>
+          <code>
+import json
+import csv
+import glob
+import os
+import ast
+
+#create and open output file
+if not os.path.exists("json_merged/"):
+        os.makedirs("json_merged/")
+outfile_name = "json_merged/halftime_show_merged.json"
+print "Merging jsons"
+
+with open(outfile_name, "a") as outfile:
+    
+    path = "C:\python27\streaming data\*.json"
+    for json_file in glob.glob(path):
+        
+        #open json file and parse data while writing into output file
+        with open(json_file, 'r') as open_json_file:
+            outfile.write(open_json_file.read())
+          </code>
+        </pre>
+
+        <p>Now the data is a little easier to handle, from a few hundred files down to four. But, we still need to pull out the information we need and put it into csv format. To do this we wrote another short python script that loads in our large json file and parses each tweet for the data we are looking for.</p>
+
+        <h3>Code that writes each line (tweet) from JSON file to a CSV file in CSV format</h3>
+      <pre>
+        <code>
+import json
+import csv
+import os
+import ast
+    
+with open ("C:\python27\scripts\json_merged\halftime_show.cvs", "a") as out_file:
+    
+    #create csv writer
+    csv = csv.writer(out_file)
+    #write header to out file
+    print >> out_file, 'tweet_id, tweet_time, tweet_author, tweet_author_id, tweet_language, tweet_geo, tweet_text'
+    #open json file and parse data
+    with open("C:\python27\scripts\json_merged\halftime_show_merged.json", 'r') as open_json_file:
+        
+        #Get each tweet
+        for line in open_json_file:
+            try:
+                tweet = json.loads(line)
+                # row represents the attributes we are pulling from each tweet
+                row = (
+                    tweet['id'],                    # tweet_id
+                    tweet['created_at'],            # tweet_time
+                    tweet['user']['screen_name'],   # tweet_author
+                    tweet['user']['location'],      # tweeter location
+                    tweet['user']['id_str'],        # tweet_authod_id
+                    tweet['lang'],                  # tweet_language
+                    tweet['geo'],                   # tweet_geo
+                    tweet['text'],                  # tweet_text
+                    tweet['timestamp_ms']           # tweet time in ms
+                )
+                values = [(value.encode('utf8') if hasattr(value, 'encode') else value) for value in row]
+                csv.writerow(values)
+            except:
+                pass 
+        </code>
+      </pre>
+
+        <br><p>After running this script the tweets are now in a clean csv file that can be imported to R studio for analysis.</p>
+              </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Super-bowl-50-twitter-statistics maintained by <a href="https://github.com/wyattdunn46">wyattdunn46</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+  </body>
+</html>

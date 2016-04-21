@@ -370,10 +370,6 @@ Full-Width Styles
 /*******************************************************************************
 Customized css
 *******************************************************************************/
-#figure_img1 img{
-    max-width: 75%;
-  }
-
 code {
   font-family: "Consolas", "Monaco","Lucida Console","Liberation Mono", "Courier New";
   font-size: .75em;
