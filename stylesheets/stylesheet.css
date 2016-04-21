@@ -370,15 +370,8 @@ Full-Width Styles
 /*******************************************************************************
 Customized css
 *******************************************************************************/
-#figure_img1 {
-  margin-left: 15%;
-}
 #figure_img1 img{
     max-width: 75%;
-  }
-
-#figure_img1 figcaption {
-    margin-right: 25%;
   }
 
 code {
@@ -389,6 +382,10 @@ code {
 figcaption {
   font-style: italic;
   text-align: center;
+}
+
+figure {
+  margin: auto;
 }
 /*******************************************************************************
 Small Device Styles
